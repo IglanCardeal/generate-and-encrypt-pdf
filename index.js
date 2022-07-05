@@ -1,38 +1,69 @@
-import Handlebars from 'handlebars';
-import pdf from 'html-pdf';
-import { readFile } from 'fs';
-import express from 'express';
+import Handlebars from 'handlebars'
+import pdf from 'html-pdf'
+import { readFile } from 'fs/promises'
+import express from 'express'
+import hummus from 'hummus'
+import stream from 'memory-streams'
 
-const app = express();
+const app = express()
 
-app.get('/', (req, res) => {
-  readFile('./template.hbs', (err, data) => {
-    if (err) console.error(err);
+const cache = new Map()
 
-    const html = compileAndGenerateHTML(data);
+app.get('/', async (req, res) => {
+  console.time('test')
+  if (!cache.get('template')) {
+    console.log('saving on cache...')
+    const data = await readFile('./template.hbs')
+    cache.set('template', data.toString('base64'))
+  } else {
+    console.log('saved on cache')
+  }
+  const data = cache.get('template')
+  const html = compileAndGenerateHTML(Buffer.from(data, 'base64'))
+  const options = {
+    type: 'pdf',
+    format: 'A4',
+    orientation: 'portrait'
+  }
 
+  pdf.create(html, options).toBuffer((err, buffer) => {
+    if (err) return res.status(500).json(err)
     const options = {
-      type: 'pdf',
-      format: 'A4',
-      orientation: 'portrait'
-    };
+      userPassword: '1',
+      ownerPassword: '1',
+      userProtectionFlag: '4'
+    }
+    res.setHeader('Content-Type', 'application/pdf')
+    res.setHeader(
+      'Content-Disposition',
+      'attachment; filename=carta-minuta.pdf'
+    )
+    const inputStream = new hummus.PDFRStreamForBuffer(buffer)
+    // const inMemoryStream = new stream.WritableStream()
+    const outputStream = new hummus.PDFStreamForResponse(res)
+    hummus.recrypt(inputStream, outputStream, options)
+    console.timeEnd('test')
+    res.end()
+    // res.json({ response: outputStream.response.toBuffer().toString('base64') })
+    // const inStream = new hummus.PDFRStreamForBuffer(buffer)
+    // // const ws = new stream.WritableStream()
+    // const outStream = new hummus.PDFStreamForResponse(res)
+    // hummus.recrypt(inStream, outStream, options)
+    // console.timeEnd('test')
+    // // res.json({ response: outStream.response.toBuffer().toString('base64') })
+    // res.end()
+  })
+})
 
-    pdf.create(html, options).toStream((err, buffer) => {
-      if (err) return res.status(500).json(err);
-      res.end(buffer);
-    });
-  });
-});
-
-const compileAndGenerateHTML = (data) => {
-  const template = Handlebars.compile(data.toString());
+const compileAndGenerateHTML = data => {
+  const template = Handlebars.compile(data.toString())
   const params = {
     name: 'Luan Paiva',
     hometown: 'Belém',
     videogame: 'Playstation 5'
-  };
+  }
 
-  return template(params);
-};
+  return template(params)
+}
 
-app.listen(3000, () => console.log('Server Up'));
+app.listen(3000, () => console.log('Server Up'))
