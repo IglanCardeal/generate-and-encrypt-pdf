@@ -4,12 +4,16 @@
   "main": "index.js",
   "type": "module",
   "scripts": {
-    "start": "node index.js"
+    "start": "nodemon index.js"
   },
   "license": "MIT",
   "dependencies": {
     "express": "^4.18.1",
     "handlebars": "^4.7.7",
-    "html-pdf": "^3.0.1"
+    "html-pdf": "^3.0.1",
+    "hummus": "^1.0.110"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.19"
   }
 }
