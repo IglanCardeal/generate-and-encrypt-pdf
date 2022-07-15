@@ -14,14 +14,15 @@ const cache = new Map()
  */
 app.get('/static', async (req, res) => {
   const templatePath = './templates/static.html'
-  if (!cache.get('template')) {
+
+  if (!cache.get(templatePath)) {
     const data = await readFile(templatePath)
-    cache.set('template', data.toString('base64'))
+    cache.set(templatePath, data.toString('base64'))
   } else {
     console.log('Serving template from cache')
   }
 
-  const data = cache.get('template')
+  const data = cache.get(templatePath)
   const html = compileAndGenerateHTML(Buffer.from(data, 'base64'))
   const options = {
     type: 'pdf',
@@ -32,6 +33,7 @@ app.get('/static', async (req, res) => {
   res.setHeader('Content-Type', 'application/pdf')
 
   pdf.create(html, options).toStream((err, stream) => {
+    if (err) return res.status(500).send('Error while generate PDF file')
     stream.pipe(res)
   })
 })
