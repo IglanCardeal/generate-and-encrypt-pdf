@@ -1,6 +1,6 @@
 # Gerador de PDFs Seguros
 
-![encrypt](./docs/pdf-encrypt.png)
+<img src="./docs/pdf-encrypt.png" alt="drawing" width="200"/>
 
 ## A partir de arquivos HTML e templates Handlebars
 
