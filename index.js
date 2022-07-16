@@ -7,6 +7,8 @@ import stream from 'memory-streams';
 
 const app = express();
 
+app.use(express.json())
+
 const cache = new Map();
 
 const getTemplateData = async (cache, templatePath) => {
@@ -34,7 +36,7 @@ app.get('/static', async (req, res) => {
     data = await getTemplateData(cache, templatePath);
   } catch (error) {
     console.error(error);
-    return res.status(500).send(error.message);
+    return res.status(500).json({message: error.message});
   }
 
   const html = compileAndGenerateHTML(Buffer.from(data, 'base64'));
@@ -47,13 +49,27 @@ app.get('/static', async (req, res) => {
   res.setHeader('Content-Type', 'application/pdf');
 
   pdf.create(html, options).toStream((err, stream) => {
-    if (err) return res.status(500).send('Error while generate PDF file');
+    if (err) return res.status(500).json({message: 'Error while generate PDF file'});
     stream.pipe(res);
   });
 });
 
+const checkParams = (params) => {
+  Object.keys(params).forEach(key => {
+    if ([undefined, null, ''].includes(key)) throw new Error(`Invalid param: ${key} can not be undefined, null or ''`);
+  });
+};
 
-app.get('/dynamic', async (req, res) => {
+app.post('/dynamic', async (req, res) => {
+  const { tool, location, name, password, secure } = req.body;
+  const params = { tool, location, name, secure };
+
+  try {
+    checkParams(params);
+  } catch (error) {
+    return res.status(400).json({message: error.message});
+  }
+
   const templatePath = './pdf-templates/dynamic.hbs';
 
   let data;
@@ -61,10 +77,12 @@ app.get('/dynamic', async (req, res) => {
     data = await getTemplateData(cache, templatePath);
   } catch (error) {
     console.error(error);
-    return res.status(500).send(error.message);
+    return res.status(500).json({message: error.message});
   }
 
-  const html = compileAndGenerateHTML(Buffer.from(data, 'base64'));
+  data = Buffer.from(data, 'base64');
+
+  const html = compileAndGenerateHTML(data, params);
   const options = {
     type: 'pdf',
     format: 'A4',
@@ -72,50 +90,27 @@ app.get('/dynamic', async (req, res) => {
   };
 
   pdf.create(html, options).toBuffer((err, buffer) => {
-    if (err) return res.status(500).json(err);
-    const options = {
-      userPassword: '1',
-      ownerPassword: '1',
-      userProtectionFlag: '4'
-    };
+    if (err) return res.status(500).json({err});
+
+    let options
+
+    if (secure) {
+      options = {
+        userPassword: password,
+        ownerPassword: password,
+        userProtectionFlag: '4'
+      };
+    }
+
     res.setHeader('Content-Type', 'application/pdf');
+
     const inStream = new hummus.PDFRStreamForBuffer(buffer);
     const outStream = new hummus.PDFStreamForResponse(res);
     hummus.recrypt(inStream, outStream, options);
+    
     res.end();
   });
 });
-
-// app.get('/static', async (req, res) => {
-//   if (!cache.get('template')) {
-//     const data = await readFile('./template.hbs')
-//     cache.set('template', data.toString('base64'))
-//   } else {
-//     console.log('Serving template from cache')
-//   }
-
-//   const data = cache.get('template')
-//   const html = compileAndGenerateHTML(Buffer.from(data, 'base64'))
-//   const options = {
-//     type: 'pdf',
-//     format: 'A4',
-//     orientation: 'portrait'
-//   }
-
-//   pdf.create(html, options).toBuffer((err, buffer) => {
-//     if (err) return res.status(500).json(err)
-//     const options = {
-//       userPassword: '1',
-//       ownerPassword: '1',
-//       userProtectionFlag: '4'
-//     }
-//     res.setHeader('Content-Type', 'application/pdf')
-//     const inStream = new hummus.PDFRStreamForBuffer(buffer)
-//     const outStream = new hummus.PDFStreamForResponse(res)
-//     hummus.recrypt(inStream, outStream, options)
-//     res.end()
-//   })
-// })
 
 const compileAndGenerateHTML = (data, params) => {
   const template = Handlebars.compile(data.toString());
