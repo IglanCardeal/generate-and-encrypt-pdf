@@ -1,8 +1,13 @@
 import express from 'express';
-import { getTemplateData, checkParams } from './src/utils.js';
-import { compileAndGenerateHTML } from './src/compiler.js';
-import { encryptBase64PDF, encryptPDFHandleStream } from './src/encrypt-pdf.js';
-import { pdfCreateToBufferAsync, pdfCreateToStreamAsync } from './src/pdf-create-async.js';
+import {
+  pdfCreateToBufferAsync,
+  pdfCreateToStreamAsync,
+  getTemplateData,
+  checkParams,
+  compileAndGenerateHTML,
+  encryptBase64PDF,
+  encryptPDFHandleStream
+} from './src/index.js';
 
 const app = express();
 
@@ -61,11 +66,13 @@ app.post('/dynamic', async (req, res) => {
     };
     const buffer = await pdfCreateToBufferAsync(html, options);
 
-    const secureOptions = secure ? {
-      userPassword: password,
-      ownerPassword: password,
-      userProtectionFlag: '4'
-    } : {};
+    const secureOptions = secure
+      ? {
+        userPassword: password,
+        ownerPassword: password,
+        userProtectionFlag: '4'
+      }
+      : {};
 
     res.setHeader('Content-Type', 'application/pdf');
 
