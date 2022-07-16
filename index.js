@@ -182,29 +182,3 @@ const compileAndGenerateHTML = (data, params) => {
 };
 
 app.listen(3000, () => console.log('Server Up'));
-
-// pdf.create(html, options).toBuffer((err, buffer) => {
-//   if (err) return res.status(500).json(err)
-//   const options = {
-//     userPassword: '1',
-//     ownerPassword: '1',
-//     userProtectionFlag: '4'
-//   }
-//   res.setHeader('Content-Type', 'application/pdf')
-//   // res.setHeader(
-//   //   'Content-Disposition',
-//   //   'attachment; filename=carta-minuta.pdf'
-//   // )
-//   // const inputStream = new hummus.PDFRStreamForBuffer(buffer)
-//   // const inMemoryStream = new stream.WritableStream()
-//   // const outputStream = new hummus.PDFStreamForResponse(inMemoryStream)
-//   // hummus.recrypt(inputStream, outputStream, options)
-//   // // res.end()
-//   // res.json({ response: outputStream.response.toBuffer().toString('base64') })
-//   const inStream = new hummus.PDFRStreamForBuffer(buffer)
-//   // const ws = new stream.WritableStream()
-//   const outStream = new hummus.PDFStreamForResponse(res)
-//   hummus.recrypt(inStream, outStream, options)
-//   // res.json({ response: outStream.response.toBuffer().toString('base64') })
-//   res.end()
-// })
