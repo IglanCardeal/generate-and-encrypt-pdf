@@ -4,10 +4,11 @@ import { readFile } from 'fs/promises';
 import express from 'express';
 import hummus from 'hummus';
 import stream from 'memory-streams';
+import { Writable } from 'stream';
 
 const app = express();
 
-app.use(express.json())
+app.use(express.json());
 
 const cache = new Map();
 
@@ -36,7 +37,7 @@ app.get('/static', async (req, res) => {
     data = await getTemplateData(cache, templatePath);
   } catch (error) {
     console.error(error);
-    return res.status(500).json({message: error.message});
+    return res.status(500).json({ message: error.message });
   }
 
   const html = compileAndGenerateHTML(Buffer.from(data, 'base64'));
@@ -49,7 +50,7 @@ app.get('/static', async (req, res) => {
   res.setHeader('Content-Type', 'application/pdf');
 
   pdf.create(html, options).toStream((err, stream) => {
-    if (err) return res.status(500).json({message: 'Error while generate PDF file'});
+    if (err) return res.status(500).json({ message: 'Error while generate PDF file' });
     stream.pipe(res);
   });
 });
@@ -60,6 +61,10 @@ const checkParams = (params) => {
   });
 };
 
+/**
+ * Generate a PDF from a dynamic Handlebars template file and optionaly
+ * add a secure password requirement.
+ */
 app.post('/dynamic', async (req, res) => {
   const { tool, location, name, password, secure } = req.body;
   const params = { tool, location, name, secure };
@@ -67,7 +72,7 @@ app.post('/dynamic', async (req, res) => {
   try {
     checkParams(params);
   } catch (error) {
-    return res.status(400).json({message: error.message});
+    return res.status(400).json({ message: error.message });
   }
 
   const templatePath = './pdf-templates/dynamic.hbs';
@@ -77,7 +82,7 @@ app.post('/dynamic', async (req, res) => {
     data = await getTemplateData(cache, templatePath);
   } catch (error) {
     console.error(error);
-    return res.status(500).json({message: error.message});
+    return res.status(500).json({ message: error.message });
   }
 
   data = Buffer.from(data, 'base64');
@@ -90,9 +95,9 @@ app.post('/dynamic', async (req, res) => {
   };
 
   pdf.create(html, options).toBuffer((err, buffer) => {
-    if (err) return res.status(500).json({err});
+    if (err) return res.status(500).json({ err });
 
-    let options
+    let options;
 
     if (secure) {
       options = {
@@ -107,8 +112,62 @@ app.post('/dynamic', async (req, res) => {
     const inStream = new hummus.PDFRStreamForBuffer(buffer);
     const outStream = new hummus.PDFStreamForResponse(res);
     hummus.recrypt(inStream, outStream, options);
-    
+
     res.end();
+  });
+});
+
+app.get('/64', async (req, res) => {
+  const paramsExample = { tool: 'Node.js', location: 'here', name: 'Iglan', secure: true, password: 'aaa' };
+
+  const templatePath = './pdf-templates/dynamic.hbs';
+
+  let data;
+  try {
+    data = await getTemplateData(cache, templatePath);
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({ message: error.message });
+  }
+
+  data = Buffer.from(data, 'base64');
+
+  const html = compileAndGenerateHTML(data, paramsExample);
+  const options = {
+    type: 'pdf',
+    format: 'A4',
+    orientation: 'portrait'
+  };
+
+  pdf.create(html, options).toBuffer((err, buffer) => {
+    if (err) return res.status(500).json({ err });
+
+    const options = {
+      userPassword: paramsExample.password,
+      ownerPassword: paramsExample.password,
+      userProtectionFlag: '4'
+    };
+
+    const inStream = new hummus.PDFRStreamForBuffer(buffer);
+    const inMemoryStream = new stream.WritableStream();
+    const outStream = new hummus.PDFStreamForResponse(inMemoryStream);
+    hummus.recrypt(inStream, outStream, options);
+
+    const base64string = outStream.response.toBuffer().toString('base64');
+    const fileName = Date.now();
+
+    res.status(200).send(`
+      <a
+        href="data:application/pdf;base64,${base64string}"
+        download="${fileName}.pdf"
+      >Download PDF</a>
+    `);
+
+    // Or a JSON Base64 response below
+
+    // res.status(200).json({
+    //   pdf: outStream.response.toBuffer().toString('base64')
+    // });
   });
 });
 
