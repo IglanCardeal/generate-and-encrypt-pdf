@@ -35,6 +35,8 @@ Um simples servidor HTTP feito em Express foi criado para oferecer os endpoints 
 
 ## Endpoints
 
+<a href="endpoints"></a>
+
 ---
 
 - `POST /dynamic`: recebe um json com campos para serem preenchidos no template que é dinâmico.
@@ -78,13 +80,29 @@ Um simples servidor HTTP feito em Express foi criado para oferecer os endpoints 
 
   <img src="./docs/base64-pdf2.png" alt="drawing" width="800"/>
 
+---
+
 - `GET /static`: retorna um PDF gerado por um template estático em HTML.
 
   Teremos como saida o PDF:
 
   <img src="./docs/static-pdf.png" alt="drawing" width="800"/>
 
-<a href="endpoints"></a>
+---
+
+## Detalhes
+
+<a href="detalhes"></a>
+
+Dentro da pasta `src` temos os seguintes arquivos com as devidas funções:
+
+- `compiler.js` com a função de compilar os dados de um **HTML** e principalmente do **Handlebars**, passando os dados dinâmicos e resultando nos dados que serão usados para gerar o PDF.
+
+- `pdf-create-async.js` com as funções de gerar de forma assíncrona o PDF e retornar ou um **Buffer** ou um **Stream**.
+
+- `encrypt-pdf.js` com as funções de encriptar ou não o PDF, dependendo do parâmetro `secureOptions` e retornar uma string **Base64** ou uma resposta em **Stream**.
+
+- `utils.js` com as funções para validar alguns dados de entrada e cachear e servir do cache os dados de um template lido anteriormente.
 
 ## Bibliotecas
 
