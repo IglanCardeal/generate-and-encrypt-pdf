@@ -35,6 +35,8 @@ Um simples servidor HTTP feito em Express foi criado para oferecer os endpoints 
 
 ## Endpoints
 
+---
+
 - `POST /dynamic`: recebe um json com campos para serem preenchidos no template que é dinâmico.
 
   - Body:
@@ -53,6 +55,28 @@ Um simples servidor HTTP feito em Express foi criado para oferecer os endpoints 
 
     Teremos como saida o PDF com os dados informados:
     <img src="./docs/dynamic-pdf.png" alt="drawing" width="800"/>
+
+---
+
+- `GET /64`: retorna um texto em HTML com um link (`a`) com o atributo `href="data:application/pdf;base64,<Base64>"` com a string em Base64 para ser clicado e baixado o arquivo PDF.
+
+  Teremos como saida o link para baixar o arquivo:
+
+  <img src="./docs/base64-pdf.png" alt="drawing" width="800"/>
+
+  Opcionalmente, tem um código comentado que pode ser aplicado para ao invés de retornar um link para ser clicado, retornar um JSON com a string Base64 para ser manipulado no front.
+
+  O código em questão:
+
+  ```js
+  res.status(200).json({
+    pdf: base64string,
+  });
+  ```
+
+  Teremos como saida o JSON:
+
+  <img src="./docs/base64-pdf2.png" alt="drawing" width="800"/>
 
 <a href="endpoints"></a>
 
