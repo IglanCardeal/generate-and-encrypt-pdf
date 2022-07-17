@@ -8,7 +8,7 @@
 
 </div>
 
-Este projeto tem com intuito de ser uma boa consulta para tomar como base para casos em que é necessário implementar funções para geração de arquivos PDFs com base em templates ou arquivos HTML, no `Node.js`.
+Este projeto tem com intuito de ser uma boa consulta para tomar como base para casos em que é necessário implementar funções para geração de arquivos PDFs com base em templates ou arquivos HTML, no NodeJS.
 
 ## Índice
 
@@ -16,7 +16,7 @@ Este projeto tem com intuito de ser uma boa consulta para tomar como base para c
 1. [Endpoints](#endpoints)
 1. [Detalhes](#detalhes)
 1. [Bibliotecas e versão do NodeJS](#bibliotecas)
-1. [Iniciando servidor](#servidor)
+1. [Iniciando o servidor](#servidor)
 1. [Autor](#autor)
 
 ## Sobre
@@ -132,7 +132,7 @@ As principais bibliotecas usadas foram:
 - `handlebars` para renderizar templates no formato `.hbs` com dados dinâmicos.
 - `hummus` para criptografar arquivos PDFs.
 
-## Iniciando servidor
+## Iniciando o servidor
 
 <p id="servidor"></p>
 
@@ -146,7 +146,7 @@ Para subir a aplicação e começar os testes, siga o passa-a-passo abaixo:
 
 Por padrão, o servidor vai subir usando a porta `3000`.
 
-### Autor
+## Autor
 
 <p id="autor"></p>
 
