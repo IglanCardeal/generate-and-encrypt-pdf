@@ -124,7 +124,7 @@ app.get('/64', async (req, res) => {
     // Or a JSON Base64 response below
 
     // res.status(200).json({
-    //   pdf: outStream.response.toBuffer().toString('base64')
+    //   pdf: base64string
     // });
   } catch (error) {
     console.error(error);
