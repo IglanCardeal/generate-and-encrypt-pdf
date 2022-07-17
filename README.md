@@ -150,20 +150,16 @@ Por padrão, o servidor vai subir usando a porta `3000`.
 
 <p id="autor"></p>
 
-<div align="center">
-
 <kbd>
  <img style="border-radius: 50%;" src="https://avatars1.githubusercontent.com/u/37749943?s=460&u=70f3bf022f3a0f28c332b1aa984510910818ef02&v=4" width="100px;" alt="iglan cardeal"/>
 </kbd>
 
 <b>Iglan Cardeal</b>
 
-Desenvolvido e mantido por Iglan Cardeal :hammer:
-Desenvolvedor NodeJS 💻
-Entre em contato! 👋🏽
+Desenvolvido e mantido por Iglan Cardeal :hammer: <br>
+Desenvolvedor NodeJS 💻 <br>
 
-cmtcardeal@outlook.com :email:
-LinkedIn [Iglan Cardeal](https://www.linkedin.com/in/iglan-cardeal/)
-StackOverflow [Cmte Cardeal](https://pt.stackoverflow.com/users/95771/cmte-cardeal?tab=profile)
-
-</div>
+Entre em contato! 👋🏽 <br>
+cmtcardeal@outlook.com :email: <br>
+LinkedIn [Iglan Cardeal](https://www.linkedin.com/in/iglan-cardeal/) <br>
+StackOverflow [Cmte Cardeal](https://pt.stackoverflow.com/users/95771/cmte-cardeal?tab=profile) <br>
