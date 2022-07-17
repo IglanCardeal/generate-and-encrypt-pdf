@@ -128,3 +128,23 @@ As principais bibliotecas usadas foram:
 - `html-pdf` para geração de PDFs a partir de dados de um template.
 - `handlebars` para renderizar templates no formato `.hbs` com dados dinâmicos.
 - `hummus` para criptografar arquivos PDFs.
+
+### Autor
+
+<p id="autor"></p>
+
+<kbd>
+ <img style="border-radius: 50%;" src="https://avatars1.githubusercontent.com/u/37749943?s=460&u=70f3bf022f3a0f28c332b1aa984510910818ef02&v=4" width="100px;" alt="iglan cardeal"/>
+</kbd>
+
+<b>Iglan Cardeal</b>
+
+Desenvolvido e mantido por Iglan Cardeal :hammer: </br>
+Desenvolvedor NodeJS 💻 <br>
+Entre em contato! 👋🏽
+
+- cmtcardeal@outlook.com :email:
+- LinkedIn [Iglan Cardeal](https://www.linkedin.com/in/iglan-cardeal/)
+- StackOverflow [Cmte Cardeal](https://pt.stackoverflow.com/users/95771/cmte-cardeal?tab=profile)
+
+</div>
