@@ -78,6 +78,12 @@ Um simples servidor HTTP feito em Express foi criado para oferecer os endpoints 
 
   <img src="./docs/base64-pdf2.png" alt="drawing" width="800"/>
 
+- `GET /static`: retorna um PDF gerado por um template estático em HTML.
+
+  Teremos como saida o PDF:
+
+  <img src="./docs/static-pdf.png" alt="drawing" width="800"/>
+
 <a href="endpoints"></a>
 
 ## Bibliotecas
