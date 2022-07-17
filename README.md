@@ -110,12 +110,13 @@ O fluxo para gerar o PDF é basicamente o mesmo para ambas as rotas, com alguns 
 sequenceDiagram
     participant Requisição HTTP
     participant Ler o template do sistema de arquivos
-    participant Compila o template e gera uma string
+    participant Compila o template e gera uma string HTML
     participant Gera o PDF
 
     Requisição HTTP->>Ler o template do sistema de arquivos: GET ou POST
-    Ler o template do sistema de arquivos->>Compila o template e gera uma string: Salva um Buffer do template em Cache
-    Compila o template e gera uma string->>Gera o PDF: Envia a string HTML para gerar o PDF
+    Ler o template do sistema de arquivos->>Ler o template do sistema de arquivos: Salva um string Base64 do template em Cache
+    Ler o template do sistema de arquivos->>Compila o template e gera uma string HTML: Envia um Buffer do template
+    Compila o template e gera uma string HTML->>Gera o PDF: Envia a string HTML para gerar o PDF
     Gera o PDF-->>Requisição HTTP: Retorna um PDF estático, dinâmico, protegido (ou não), em Base64
 ```
 
