@@ -15,13 +15,13 @@ Este projeto tem com intuito de ser uma boa consulta para tomar como base para c
 1. [Sobre](#sobre)
 1. [Endpoints](#endpoints)
 1. [Detalhes](#detalhes)
-1. [Bibliotecas](#bibliotecas)
+1. [Bibliotecas e versão do NodeJS](#bibliotecas)
 1. [Iniciando servidor](#servidor)
 1. [Autor](#autor)
 
 ## Sobre
 
-<a href="sobre"></a>
+<p id="sobre"></p>
 
 O projeto possui 3 endpoints de API para gerar arquivos PDF, variando desde PDFs gerados por um template estático de HTML até a geração de PDFs com dados dinâmicos resultando em string no formato Base64. Um dos endpoint permite gerar PDF com dados informados no corpo da requisição e ainda oferecendo a opção de adicionar uma senha ao arquivo gerado.
 
@@ -35,7 +35,7 @@ Um simples servidor HTTP feito em Express foi criado para oferecer os endpoints 
 
 ## Endpoints
 
-<a href="endpoints"></a>
+<p id="endpoints"></p>
 
 ---
 
@@ -92,7 +92,7 @@ Um simples servidor HTTP feito em Express foi criado para oferecer os endpoints 
 
 ## Detalhes
 
-<a href="detalhes"></a>
+<p id="detalhes"></p>
 
 Dentro da pasta `src` temos os seguintes arquivos com as devidas funções:
 
@@ -121,7 +121,9 @@ sequenceDiagram
 
 ## Bibliotecas
 
-<a href="bibliotecas"></a>
+<p id="bibliotecas"></p>
+
+O projeto usa a versão <kbd>14</kbd> do NodeJS, logo caso você use uma versão diferente, use o [`nvm`](https://github.com/nvm-sh/nvm) para alterar facilmente a versão do NodeJS.
 
 As principais bibliotecas usadas foram:
 
@@ -129,9 +131,25 @@ As principais bibliotecas usadas foram:
 - `handlebars` para renderizar templates no formato `.hbs` com dados dinâmicos.
 - `hummus` para criptografar arquivos PDFs.
 
+## Iniciando servidor
+
+<p id="servidor"></p>
+
+Para subir a aplicação e começar os testes, siga o passa-a-passo abaixo:
+
+1. Clone este repositório com o comando `git clone https://github.com/IglanCardeal/generate-and-encrypt-pdf.git`
+1. Acesse a pasta do repositório com `cd generate-and-encrypt-pdf`
+1. Use a versão 14 do NodeJS com o comando `nvm use 14`
+1. Instale as dependências com o comando `yarn >/dev/null`
+1. E inicie o servidor com o comando `yarn start`
+
+Por padrão, o servidor vai subir usando a porta `3000`.
+
 ### Autor
 
 <p id="autor"></p>
+
+<div align="center">
 
 <kbd>
  <img style="border-radius: 50%;" src="https://avatars1.githubusercontent.com/u/37749943?s=460&u=70f3bf022f3a0f28c332b1aa984510910818ef02&v=4" width="100px;" alt="iglan cardeal"/>
@@ -139,12 +157,12 @@ As principais bibliotecas usadas foram:
 
 <b>Iglan Cardeal</b>
 
-Desenvolvido e mantido por Iglan Cardeal :hammer: </br>
-Desenvolvedor NodeJS 💻 <br>
+Desenvolvido e mantido por Iglan Cardeal :hammer:
+Desenvolvedor NodeJS 💻
 Entre em contato! 👋🏽
 
-- cmtcardeal@outlook.com :email:
-- LinkedIn [Iglan Cardeal](https://www.linkedin.com/in/iglan-cardeal/)
-- StackOverflow [Cmte Cardeal](https://pt.stackoverflow.com/users/95771/cmte-cardeal?tab=profile)
+cmtcardeal@outlook.com :email:
+LinkedIn [Iglan Cardeal](https://www.linkedin.com/in/iglan-cardeal/)
+StackOverflow [Cmte Cardeal](https://pt.stackoverflow.com/users/95771/cmte-cardeal?tab=profile)
 
 </div>
