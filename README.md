@@ -33,6 +33,29 @@ Um simples servidor HTTP feito em Express foi criado para oferecer os endpoints 
 
 - `GET /static`, para gerar um PDF com corpo estático.
 
+## Endpoints
+
+- `POST /dynamic`: recebe um json com campos para serem preenchidos no template que é dinâmico.
+
+  - Body:
+
+    ```json
+    {
+      "name": "Cardeal",
+      "tool": "NodeJS",
+      "location": "Brazil",
+      "password": "123",
+      "secure": true
+    }
+    ```
+
+    A flag `secure` recebe um _boolean_ que indica se deve gerar um PDF protegido pela senha informada em `password`.
+
+    Teremos como saida o PDF com os dados informados:
+    <img src="./docs/dynamic-pdf.png" alt="drawing" width="800"/>
+
+<a href="endpoints"></a>
+
 ## Bibliotecas
 
 <a href="bibliotecas"></a>
